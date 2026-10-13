@@ -10,50 +10,64 @@
 
 <body>
 
-  <h1>My Blog Website</h1>
+  <header class="site-header">
+    <h1>My Little Blog </h1>
+    <p>A cozy corner for stories, ideas, and inspiration.</p>
+  </header>
+
+  <% if (user) { %>
+    <p>Welcome, <%= user.name %>!</p>
+
+    <form action="/logout" method="POST">
+        <button type="submit">Log Out</button>
+    </form>
+  <% } else { %>
+    <a href="/signin">Sign In</a>
+    <a href="/signup">Sign Up</a>
+  <% } %>
+
 
   <!-- step 3: post creation -->
   <!-- form for new blog post -->
-  <h2>Create a New Post</h2>
+  
+  <% if (user) { %>
 
-  <form action="/posts" method="POST">
+    <h2>Create a New Post</h2>
 
-    <label for="creator">Name:</label>
-    <input
-      type="text"
-      id="creator"
-      name="creator"
-      required
-    >
+    <form action="/posts" method="POST">
 
-    <br><br>
+        <label for="title">Title:</label>
+        <input
+            type="text"
+            id="title"
+            name="title"
+            required
+        >
 
-    <label for="title">Title:</label>
-    <input
-      type="text"
-      id="title"
-      name="title"
-      required
-    >
+        <br><br>
 
-    <br><br>
+        <label for="content">Blog:</label>
+        <br>
 
-    <label for="content">Blog:</label>
-    <br>
+        <textarea
+            id="content"
+            name="content"
+            rows="8"
+            cols="50"
+            required
+        ></textarea>
 
-    <textarea
-      id="content"
-      name="content"
-      rows="8"
-      cols="50"
-      required
-    ></textarea>
+        <br><br>
 
-    <br><br>
+        <button type="submit">Create Post</button>
 
-    <button type="submit">Create Post</button>
+    </form>
 
-  </form>
+  <% } else { %>
+
+    <p>Please <a href="/signin">sign in</a> to create a blog post.</p>
+
+  <% } %>
 
 
   <hr>
@@ -80,15 +94,19 @@
         <%= post.content %>
       </p>
 
-      <!--edit -->
-      <a href="/edit/<%= post.id %>">
-        Edit
-      </a>
+      
+  <% if (user && user.user_id === post.creator_user_id) { %>
 
-      <!--delete -->
-      <form action="/delete/<%= post.id %>" method="POST">
+    <a href="/edit/<%= post.id %>">
+        Edit
+    </a>
+
+    <form action="/delete/<%= post.id %>" method="POST">
         <button type="submit">Delete</button>
-      </form>
+    </form>
+
+  <% } %>
+
 
     </article>
 

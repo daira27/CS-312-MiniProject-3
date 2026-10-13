@@ -14,14 +14,7 @@
 
   <form action="/edit/<%= post.id %>" method="POST">
 
-    <label for="creator">Name:</label>
-    <input
-      type="text"
-      id="creator"
-      name="creator"
-      value="<%= post.creator %>"
-      required
-    >
+    <p>Author: <%= post.creator %></p>
 
     <br><br>
 
